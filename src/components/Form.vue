@@ -8,11 +8,11 @@
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label for="username" class="form-label">Username</label>
-                            <input type="text" class="form-control" id="username" v-model="formData.username">
+                            <input type="text" class="form-control" id="username" required v-model="formData.username">
                         </div>
                         <div class="col-md-6">
                             <label for="password" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="password" v-model="formData.password">
+                            <input type="password" class="form-control" id="password" minlength="4" maxlength="10" v-model="formData.password">
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -20,21 +20,24 @@
                             <div class="form-check">
                                 <input type="checkbox" class="form-check-input" id="isAustralian" v-model="formData.isAustralian">
                                 <label class="form-check-label" for="isAustralian">Australian Resident?</label>
-                
                             </div>
                         </div>
                         <div class="col-md-6">
                             <label for="gender" class="form-label">Gender</label>
-                            <select class="form-select" id="gender" v-model="formData.gender">
+                            <select class="form-select" id="gender" required v-model="formData.gender">
                                 <option value="female">Female</option>
                                 <option value="male">Male</option>
                                 <option value="other">Other</option>
                             </select>
                         </div>
+                        <div class="col-md-6">
+                            <label for="age" class="form-label">Age</label>
+                            <input type="number" class="form-control" id="age" required min="13" v-model="formData.age">
+                        </div>
                     </div>
                     <div class="mb-3">    
                         <label for="reason" class="form-label" >Reason For Joining:</label>
-                        <textarea class="form-control" id="reason" rows="3" v-model="formData.reason"></textarea>
+                        <textarea class="form-control" id="reason" rows="3" maxlength="100" v-model="formData.reason"></textarea>
                     </div>
                     <div class="text-center">
                         <button type="submit" class="btn btn-primary me-2">Submit</button>
@@ -56,6 +59,7 @@
             <li class="list-group-item">Password: {{ card.password }}</li>
             <li class="list-group-item">Australian Resident: {{ card.isAustralian ? 'Yes' : 'No' }}</li>
             <li class="list-group-item">Gender: {{ card.gender }}</li>
+            <li class="list-group-item">Age: {{ card.age }}</li>
             <li class="list-group-item">Reason: {{ card.reason }}</li>
          </ul>
       </div>
@@ -72,7 +76,8 @@ import { ref } from 'vue';
       password: '',
       isAustralian: false,
       reason: '',
-      gender: ''
+      gender: '',
+      age:''
   });
   
   const submittedCards = ref([]);
@@ -81,6 +86,10 @@ import { ref } from 'vue';
       submittedCards.value.push({
           ...formData.value
       });
+  };
+
+  const clearForm = () => {
+    submittedCards.length = 0
   };
 </script>
 
