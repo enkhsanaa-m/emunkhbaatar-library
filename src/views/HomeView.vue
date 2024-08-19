@@ -22,6 +22,13 @@
                             v-model="formData.password" />
                             <div v-if="errors.password" class="text-danger">{{ errors.password }}</div>
                         </div>
+                        <div class="col-md-6">
+                            <label for="confirm-password" class="form-label">Confirm Password</label>
+                            <input type="password" class="form-control" id="confirm-password" 
+                            @blur="() => validateConfirmPassword(true)"
+                            v-model="formData.confirmPassword" />
+                            <div v-if="errors.confirmPassword" class="text-danger">{{ errors.confirmPassword }}</div>
+                        </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-6">
@@ -68,7 +75,7 @@
             </div>
         </div> 
     </div>
-<!-- <div class="row mt-5" v-if="submittedCards.length">
+<div class="row mt-5" v-if="submittedCards.length">
    <div class="d-flex flex-wrap justify-content-start">
       <div v-for="(card, index) in submittedCards" :key="index" class="card m-2" style="width: 18rem;">
          <div class="card-header">
@@ -84,7 +91,7 @@
          </ul>
       </div>
    </div>
-</div> -->
+</div>
 <div v-if ="submittedCards.length" class ="container mt-5">
     <DataTable :value="submittedCards" tableStyle="min-width: 50rem">
         <Column field="username" header="Username" sortable style ="width:25%"></Column>
@@ -106,6 +113,7 @@ import Column from 'primevue/column';
   const formData = ref({
       username: '',
       password: '',
+      confirmPassword: '',
       isAustralian: false,
       reason: '',
       gender: '',
@@ -138,8 +146,13 @@ import Column from 'primevue/column';
   const errors = ref({
     username: null,
     password: null,
+    confirmPassword: null,
     resident: null,
     gender: null,
+    reason: null
+  })
+
+  const validation = ref( {
     reason: null
   })
 
@@ -198,6 +211,14 @@ import Column from 'primevue/column';
         if(blur) errors.value.age = "You must be over 13 years old"
     } else {
         errors.value.age = null;
+    }
+  }
+
+  const validateConfirmPassword = (blur) => {
+    if (formData.value.password !== formData.value.confirmPassword) {
+        if (blur) errors.value.confirmPassword = 'Password do not match';
+    } else {
+        errors.value.confirmPassword = null;
     }
   }
 
