@@ -15,6 +15,18 @@
                             <div v-if="errors.username" class ="text-danger"> {{ errors.username }}</div>
                         </div>
                         <div class="col-md-6">
+                            <label for="gender" class="form-label">Gender</label>
+                            <select class="form-select" id="gender" 
+                            @blur = "() => validateGender(true)"
+                            @change = "() => validateGender(false)"
+                            v-model="formData.gender">
+                                <option value="female">Female</option>
+                                <option value="male">Male</option>
+                                <option value="other">Other</option>
+                            </select>
+                            <div v-if = "errors.gender" class = "text-danger"> {{ errors.gender }}</div>
+                        </div>
+                        <div class="col-md-6">
                             <label for="password" class="form-label">Password</label>
                             <input type="password" class="form-control" id="password" 
                             @blur="() => validatePassword(true)"
@@ -32,24 +44,6 @@
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-6">
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="isAustralian" v-model="formData.isAustralian">
-                                <label class="form-check-label" for="isAustralian">Australian Resident?</label>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="gender" class="form-label">Gender</label>
-                            <select class="form-select" id="gender" 
-                            @blur = "() => validateGender(true)"
-                            @change = "() => validateGender(false)"
-                            v-model="formData.gender">
-                                <option value="female">Female</option>
-                                <option value="male">Male</option>
-                                <option value="other">Other</option>
-                            </select>
-                            <div v-if = "errors.gender" class = "text-danger"> {{ errors.gender }}</div>
-                        </div>
-                        <div class="col-md-6">
                             <label for="age" class="form-label">Age</label>
                             <input type="number" class="form-control" id="age" 
                             @blur = "() => validateAge(true)"
@@ -57,15 +51,23 @@
                             v-model="formData.age">
                         </div>
                         <div v-if="errors.age" class="text-danger">{{ errors.age }}</div>
+
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="isAustralian" v-model="formData.isAustralian">
+                                <label class="form-check-label" for="isAustralian">Australian Resident?</label>
+                            </div>
+                        </div>
                     </div>
                     <div class="mb-3">    
                         <label for="reason" class="form-label" >Reason For Joining:</label>
                         <textarea class="form-control" id="reason" rows="3" 
-                        @blur = "() => validateReason(true)"
-                        @input = "() => validateReason(false)"
+                        @blur = "() => validateReasonBlur(true)"
+                        @input = "() => validateReasonBlur(false)"
                         v-model="formData.reason"></textarea>
                     </div>
                     <div v-if="errors.reason" class = "text-danger">{{ errors.reason }}</div>
+                    <div v-if="friendReferral" class="text-success">It's good to have a friend</div>
                     <div class="text-center">
                         <button type="submit" class="btn btn-primary me-2">Submit</button>
                         <button type="button" class="btn btn-secondary" 
@@ -152,9 +154,7 @@ import Column from 'primevue/column';
     reason: null
   })
 
-  const validation = ref( {
-    reason: null
-  })
+  const friendReferral = ref(false)
 
   const validateName = (blur) => {
     if (formData.value.username.length <3) {
@@ -206,6 +206,11 @@ import Column from 'primevue/column';
     }
   }
 
+  const validateReasonBlur = (blur) => {
+    validateReason(blur);
+    validateReasonSuccess(blur);
+  }
+
   const validateAge = (blur) => {
     if (formData.value.age < 13) {
         if(blur) errors.value.age = "You must be over 13 years old"
@@ -219,6 +224,15 @@ import Column from 'primevue/column';
         if (blur) errors.value.confirmPassword = 'Password do not match';
     } else {
         errors.value.confirmPassword = null;
+    }
+  }
+
+  const validateReasonSuccess = (blur) => {
+    if (/friend/i.test(formData.value.reason)) {
+        if(blur) friendReferral.value = true;
+    }
+    else {
+        friendReferral.value = false;
     }
   }
 
