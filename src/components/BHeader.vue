@@ -15,6 +15,9 @@
           <li class="nav-item">
             <router-link to="/login" class="nav-link" active-class="active">Login</router-link>
           </li>
+          <li class="nav-item">
+            <router-link to="/addbook" class="nav-link" active-class="active">Add book</router-link>
+          </li>
         </ul>
       </header>
     </div>

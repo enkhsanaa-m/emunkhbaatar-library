@@ -1,6 +1,6 @@
 
 <template>
-    <div class="container mt-5">
+    <div>
         <div class="row">
             <div class="col-md-8 offset-md-2">  
                 <h1 class="text-center">User Information Form</h1>
@@ -77,6 +77,7 @@
             </div>
         </div> 
     </div>
+
 <div class="row mt-5" v-if="submittedCards.length">
    <div class="d-flex flex-wrap justify-content-start">
       <div v-for="(card, index) in submittedCards" :key="index" class="card m-2" style="width: 18rem;">
@@ -101,7 +102,7 @@
         <Column field="isAustralian" header="Is Australian Resident"></Column>
         <Column field="gender" header="Gender"></Column>
         <Column field="age" header="Age"></Column>
-        <Column field="reason" header="Reason for joining"> </Column>
+        <Column header="Reason for joining"> </Column>
     </DataTable>
 </div>
 </template>
